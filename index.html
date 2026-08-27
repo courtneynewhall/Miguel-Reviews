@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #050805;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+    }
+
+    body {
+      padding: 20px;
+    }
+
+    .reviews {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .review-card {
+      background: #081008;
+      border: 1px solid #39ff14;
+      border-radius: 14px;
+      padding: 28px;
+
+      display: flex;
+      flex-direction: column;
+
+      min-height: 240px;
+    }
+
+    .stars {
+      color: #39ff14;
+      font-size: 24px;
+      letter-spacing: 3px;
+      margin-bottom: 22px;
+    }
+
+    .review-text {
+      font-size: 17px;
+      line-height: 1.6;
+      flex-grow: 1;
+      margin-bottom: 24px;
+    }
+
+    .reviewer {
+      color: #39ff14;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .loading {
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    @media (max-width: 800px) {
+      .reviews {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 550px) {
+      body {
+        padding: 12px;
+      }
+
+      .reviews {
+        grid-template-columns: 1fr;
+      }
+
+      .review-card {
+        min-height: auto;
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="reviews">
+    <div class="loading">
+      Loading reviews...
+    </div>
+  </div>
+
+
+  <script>
+
+    function loadReviews(reviews) {
+
+      const container =
+        document.getElementById("reviews");
+
+
+      if (!reviews || reviews.length === 0) {
+
+        container.innerHTML =
+          "<div class='loading'>No reviews yet.</div>";
+
+        return;
+
+      }
+
+
+      container.className = "reviews";
+      container.innerHTML = "";
+
+
+      reviews.forEach(function(item) {
+
+        const card =
+          document.createElement("div");
+
+        card.className = "review-card";
+
+
+        const stars =
+          document.createElement("div");
+
+        stars.className = "stars";
+
+
+        const rating =
+          Math.max(
+            0,
+            Math.min(
+              5,
+              Number(item.rating) || 0
+            )
+          );
+
+
+        stars.textContent =
+          "★".repeat(rating) +
+          "☆".repeat(5 - rating);
+
+
+        const review =
+          document.createElement("div");
+
+        review.className = "review-text";
+
+        review.textContent =
+          "“" + item.review + "”";
+
+
+        const reviewer =
+          document.createElement("div");
+
+        reviewer.className = "reviewer";
+
+        reviewer.textContent =
+          item.name;
+
+
+        card.appendChild(stars);
+        card.appendChild(review);
+        card.appendChild(reviewer);
+
+        container.appendChild(card);
+
+      });
+
+    }
+
+  </script>
+
+
+  <script
+    src="https://script.google.com/macros/s/AKfycbyf7j1RSRzZnpajJs05kJZaKZnR9KlZCuC_vnzWSjU3-Fyx1rykHG8RN4xkacUb8FFt/exec?callback=loadReviews">
+  </script>
+
+</body>
+</html>
